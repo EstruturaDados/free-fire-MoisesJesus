@@ -26,6 +26,7 @@ typedef struct {
 void iniciarLista(lista* lista);
 void inserirItem(lista* mochila, item* item);
 void removerItem(lista* mochila, char* nomeItem);
+void buscarItem(lista* mochila, char* nomeItem);
 void listarItens(lista* mochila);
 void limparBufferEntrada();
 
@@ -50,10 +51,11 @@ int main() {
         // Menu principal com opções:
         printf("Itens na mochila: %d/10\n", mochila->quantidade);
         printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-        printf("\t1 - Adicionar item a mochila\n");  // 1. Adicionar um item
-        printf("\t2 - Remover item da mochila\n");   // 2. Remover um item
-        printf("\t3 - Listar itens na mochila\n");   // 3. Listar todos os itens
-        printf("\t0 - Sair\n");                      // 0. Sair
+        printf("\t1. Adicionar item a mochila\n");  // 1. Adicionar um item
+        printf("\t2. Remover item da mochila\n");   // 2. Remover um item
+        printf("\t3. Listar itens na mochila\n");   // 3. Listar todos os itens
+        printf("\t4. Buscar item por nome\n");
+        printf("\t0. Sair\n");                      // 0. Sair
         printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
         printf("Digite uma das opcoes: ");
@@ -92,6 +94,16 @@ int main() {
                 break;
             case 3:
                 listarItens(mochila);
+                printf("\n\n\n\n");
+                break;
+            case 4:
+                printf("--- Buscando Item na mochila---\n");
+
+                printf("Digite o nome do item que deseja buscar: ");
+                fgets(nomeItem, 30, stdin);
+                nomeItem[strcspn(nomeItem, "\n")] = 0;
+
+                buscarItem(mochila, nomeItem);
                 break;
             case 0:
                 return 0;
@@ -145,11 +157,26 @@ void removerItem(lista* mochila, char* nomeItem){
 }
 
 
+void buscarItem(lista* mochila, char* nomeItem){
+    for(int i = 0; i < mochila->quantidade; i++){
+        if(strcmp(mochila->itens[i].nome, nomeItem) == 0){
+            printf("\n--- Item Encontrado! ---\n");
+            printf("Nome: %s\n", mochila->itens[i].nome);
+            printf("Tipo: %s\n", mochila->itens[i].tipo);
+            printf("Quantidade: %d\n", mochila->itens[i].quantidade);
+            printf("----------------------- \n");
+            return;
+        }
+    }
+    printf("Resultado: Item '%s' NAO foi encontrado na mochila.\n", nomeItem);
+}
+
+
 void listarItens(lista* mochila){
     printf("-=-=-=-=-=-=-=-=-=-=Itens na Mochila-=(%2d/10)=-=-=-=-=-=-=\n", mochila->quantidade);
-    printf("NOME               |TIPO               |QUANTIDADE         \n");
+    printf("NOME\t\t|TIPO\t\t|QUANTIDADE\n");
     for(int i = 0; i < mochila->quantidade; i++){
-        printf("%s                 |%s                 |%d\n", mochila->itens[i].nome, mochila->itens[i].tipo, mochila->itens[i].quantidade);
+        printf("%s\t\t|%s\t\t|%d\n", mochila->itens[i].nome, mochila->itens[i].tipo, mochila->itens[i].quantidade);
         
     }
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
